@@ -5,59 +5,139 @@ description: A production-ready blueprint for GitHub Copilot Agent Skills in VS 
 permalink: /
 ---
 
-# Azure Training Agent Skills
+<section class="hero">
+  <div>
+    <div class="hero-kicker">Azure Training • MCP Powered • Agent Driven</div>
+    <h1>Build Azure training that feels like a live platform, not static documentation.</h1>
+    <p>
+      This site packages GitHub Copilot Agent Skills, Azure MCP tools, Bicep validation,
+      PowerShell automation, and Microsoft Learn grounding into one repeatable training workflow.
+    </p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ '/how-to-use/' | relative_url }}">Start With The Setup Guide</a>
+      <a class="btn btn-secondary" href="{{ '/how-to-use/#using-the-prompts' | relative_url }}">Jump To Prompt Workflows</a>
+    </div>
+  </div>
+  <aside class="hero-panel">
+    <h3>Delivery Stack</h3>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>4</strong>
+        Prompts that run end-to-end delivery workflows.
+      </div>
+      <div class="hero-stat">
+        <strong>4</strong>
+        MCP servers grounding Azure docs, IaC, and automation.
+      </div>
+      <div class="hero-stat">
+        <strong>7</strong>
+        Skills composing orchestration, assessment, quality, and learner state.
+      </div>
+      <div class="hero-stat">
+        <strong>Learn</strong>
+        Every key claim is grounded in learn.microsoft.com evidence.
+      </div>
+    </div>
+  </aside>
+</section>
 
-<p align="center">
-  <img src="media/azure_copilot_trainer.png" alt="Azure Training Agent Skills" width="60%" />
-</p>
+<div class="azure-callout">
+  <strong>What this is for:</strong> teams building guided Azure learning paths with hands-on Bicep deployment labs,
+  PowerShell automation, learner checkpointing, remediation, and release-quality trust controls.
+</div>
 
-A production-ready blueprint and starter implementation for **GitHub Copilot Agent Skills** in VS Code, focused on Azure training delivery.
+## What You Get
 
-Skills, prompts, and MCP server integration work together to generate grounded, learn.microsoft.com-sourced Azure training programs — complete with hands-on Bicep IaC labs, PowerShell automation tasks, learner state management, and automated quality gates.
+<section class="azure-grid">
+  <article class="azure-card">
+    <div class="azure-chip">Orchestration</div>
+    <h3>Composable agent skills</h3>
+    <p>Create full training programs with dedicated skills for service modules, scenarios, assessments, learner state, source-grounding, and quality gates.</p>
+  </article>
+  <article class="azure-card">
+    <div class="azure-chip">Hands-On</div>
+    <h3>Infrastructure and automation built in</h3>
+    <p>Every training path includes Bicep IaC tasks and PowerShell automation work so learners practice real deployment and operations flows.</p>
+  </article>
+  <article class="azure-card">
+    <div class="azure-chip">Trust</div>
+    <h3>Grounded outputs only</h3>
+    <p>Technical claims are validated against Microsoft Learn, with confidence labels and evidence links before content is considered releasable.</p>
+  </article>
+  <article class="azure-card">
+    <div class="azure-chip">Continuity</div>
+    <h3>Learner progress survives interruptions</h3>
+    <p>Checkpoint snapshots and resume tokens let learners pause and continue without losing their exact objective and activity position.</p>
+  </article>
+</section>
 
----
+## Prompt Workflows
 
-## What you get
+<section class="azure-grid">
+  <article class="azure-card">
+    <div class="azure-chip">Author</div>
+    <h3><code>/azure-training-author</code></h3>
+    <p>Generates a complete Azure training program with modules, labs, scenarios, assessments, a trust report, and a quality-gate decision.</p>
+  </article>
+  <article class="azure-card">
+    <div class="azure-chip">Session</div>
+    <h3><code>/azure-self-paced-session</code></h3>
+    <p>Runs one timed self-paced session for a learner, including a Bicep lab, a PowerShell task, a recap, and a saved checkpoint.</p>
+  </article>
+  <article class="azure-card">
+    <div class="azure-chip">Resume</div>
+    <h3><code>/azure-learner-resume</code></h3>
+    <p>Restores the learner to the last validated checkpoint and continues the session, with automatic checkpoint recovery when needed.</p>
+  </article>
+  <article class="azure-card">
+    <div class="azure-chip">Review</div>
+    <h3><code>/azure-self-paced-review</code></h3>
+    <p>Analyzes learner progress, detects weak areas, and builds a remediation plan with next-step Bicep and PowerShell exercises.</p>
+  </article>
+</section>
 
-- **Composable skills** for course orchestration, service-specific instruction, learner state, anti-hallucination checks, scenario generation, assessment, and quality gates.
-- **Four ready-to-run prompts** that orchestrate the skills automatically — no manual skill chaining required.
-- **Persistent learner state** with checkpoint snapshots and resume tokens for pause/resume continuity.
-- **Four MCP servers** providing live Azure documentation, learn.microsoft.com retrieval, Bicep authoring tooling, and PowerShell automation support.
-- **Source-grounding guardrails** that enforce learn.microsoft.com-only proof links and confidence labels on every key claim.
-- **Automated quality gates** that produce a Pass or Fail release decision with corrective actions.
+## MCP Server Integration
 
----
+<div class="azure-table">
 
-## The four prompts
+| Server              | Purpose                                                                | Why It Matters                                                                          |
+| ------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
+| Azure MCP           | Azure best practices, resource schemas, and service documentation      | Keeps architecture and service guidance aligned with current Azure recommendations.     |
+| Microsoft Learn MCP | Documentation search, full-page retrieval, official code samples       | Prevents unsupported claims and provides traceable evidence.                            |
+| Bicep MCP           | Bicep best practices, file diagnostics, resource schemas, AVM metadata | Makes infrastructure labs accurate, validated, and aligned with current Bicep patterns. |
+| PowerShell MCP      | Script execution, syntax validation, automation task tooling           | Ensures automation exercises are executable instead of theoretical.                     |
 
-| Prompt                      | What it does                                                                                                                         |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `/azure-training-author`    | Generates a complete Azure training program: modules, labs, scenarios, assessments, trust report, and quality-gate result.           |
-| `/azure-self-paced-session` | Runs one timed self-paced session for a learner on a specific objective, with a Bicep lab, a PowerShell task, and a checkpoint save. |
-| `/azure-learner-resume`     | Restores a learner exactly to their last checkpoint and continues the session, with automatic recovery if state is invalid.          |
-| `/azure-self-paced-review`  | Analyzes a learner's weekly progress, identifies weak areas, and produces a targeted remediation plan for the next week.             |
+</div>
 
----
+## How The Experience Fits Together
 
-## MCP server integration
+<section class="azure-grid">
+  <article class="azure-card">
+    <div class="azure-chip">1</div>
+    <h3>Set up VS Code, extensions, and MCP servers</h3>
+    <p>Install the required tooling and confirm Agent mode plus MCP services are active.</p>
+  </article>
+  <article class="azure-card">
+    <div class="azure-chip">2</div>
+    <h3>Generate a training track</h3>
+    <p>Use the authoring prompt to create a role-based Azure program with scenarios, labs, and assessments.</p>
+  </article>
+  <article class="azure-card">
+    <div class="azure-chip">3</div>
+    <h3>Deliver sessions and checkpoint learners</h3>
+    <p>Run self-paced sessions, persist learner state, and recover seamlessly after interruptions.</p>
+  </article>
+  <article class="azure-card">
+    <div class="azure-chip">4</div>
+    <h3>Review progress and tighten weak areas</h3>
+    <p>Use the weekly review prompt to adapt the path based on objective-level performance trends.</p>
+  </article>
+</section>
 
-This solution uses four MCP servers. Skills call them automatically — you do not need to invoke them directly.
+## Get Started
 
-| Server              | Purpose                                                                     |
-| ------------------- | --------------------------------------------------------------------------- |
-| Azure MCP           | Azure best practices, resource schemas, service documentation               |
-| Microsoft Learn MCP | Documentation search, full-page retrieval, official code samples            |
-| Bicep MCP           | Bicep best practices, file diagnostics, resource type schemas, AVM metadata |
-| PowerShell MCP      | PowerShell script execution, syntax validation, automation task tooling     |
+See [How To Use]({{ '/how-to-use/' | relative_url }}) for the full step-by-step setup and operating guide.
 
----
-
-## Get started
-
-See the [How To Use](how-to-use) guide for complete step-by-step setup and usage instructions.
-
----
-
-## Source policy
+## Source Policy
 
 All training content generated by this package is grounded in [learn.microsoft.com](https://learn.microsoft.com) exclusively. Every key claim includes a verifiable proof link. Claims without a proof link are marked Unverified and excluded from release output.
