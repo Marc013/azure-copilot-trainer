@@ -42,14 +42,14 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Add local npm binaries to PATH
-        run: echo "${{ github.workspace }}/docs/node_modules/.bin" >> $GITHUB_PATH
-
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: 'latest'
+          hugo-version: '0.157.0'
           extended: true
+
+      - name: Install Dart Sass
+        run: npm install -g sass
 
       - name: Install CSS tooling
         working-directory: ./docs
