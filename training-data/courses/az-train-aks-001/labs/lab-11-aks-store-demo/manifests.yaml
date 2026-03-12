@@ -1,0 +1,306 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# namespace.yaml — aks-store-demo namespace
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: aks-store-demo
+  labels:
+    app.kubernetes.io/name: aks-store-demo
+    azure.workload.identity/use: "true"
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# configmap.yaml — shared service URLs
+# Values reference Kubernetes Service DNS names (ClusterIP services)
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: store-config
+  namespace: aks-store-demo
+data:
+  ORDER_SERVICE_URL: "http://order-service:3000"
+  PRODUCT_SERVICE_URL: "http://product-service:3002"
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# ServiceAccount for Workload Identity (annotated with managed identity client ID)
+# Replace <WORKLOAD_IDENTITY_CLIENT_ID> with output from lab-04-identity
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: workload-identity-sa
+  namespace: aks-store-demo
+  annotations:
+    azure.workload.identity/client-id: "<WORKLOAD_IDENTITY_CLIENT_ID>"
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# order-service — handles order creation and Azure Service Bus integration
+# Replace <ACR_LOGIN_SERVER> with output acrLoginServer from lab-03-acr
+# Replace <IMAGE_TAG> with the build ID (set to 'latest' for manual runs)
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order-service
+  namespace: aks-store-demo
+  labels:
+    app: order-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: order-service
+  template:
+    metadata:
+      labels:
+        app: order-service
+        azure.workload.identity/use: "true"
+    spec:
+      serviceAccountName: workload-identity-sa
+      containers:
+        - name: order-service
+          image: <ACR_LOGIN_SERVER>/aks-store-demo/order-service:<IMAGE_TAG>
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          envFrom:
+            - configMapRef:
+                name: store-config
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# product-service — manages product catalogue
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service
+  namespace: aks-store-demo
+  labels:
+    app: product-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: product-service
+  template:
+    metadata:
+      labels:
+        app: product-service
+    spec:
+      containers:
+        - name: product-service
+          image: <ACR_LOGIN_SERVER>/aks-store-demo/product-service:<IMAGE_TAG>
+          ports:
+            - containerPort: 3002
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          envFrom:
+            - configMapRef:
+                name: store-config
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 3002
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 3002
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# store-admin — internal admin UI (not exposed externally; uses ClusterIP)
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-admin
+  namespace: aks-store-demo
+  labels:
+    app: store-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: store-admin
+  template:
+    metadata:
+      labels:
+        app: store-admin
+    spec:
+      containers:
+        - name: store-admin
+          image: <ACR_LOGIN_SERVER>/aks-store-demo/store-admin:<IMAGE_TAG>
+          ports:
+            - containerPort: 8081
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          envFrom:
+            - configMapRef:
+                name: store-config
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# store-front — customer-facing React UI — exposed via AGIC Ingress
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: store-front
+  namespace: aks-store-demo
+  labels:
+    app: store-front
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: store-front
+  template:
+    metadata:
+      labels:
+        app: store-front
+    spec:
+      containers:
+        - name: store-front
+          image: <ACR_LOGIN_SERVER>/aks-store-demo/store-front:<IMAGE_TAG>
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 100m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 128Mi
+          envFrom:
+            - configMapRef:
+                name: store-config
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# services.yaml — ClusterIP services for internal traffic + NodePort for admin
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: Service
+metadata:
+  name: order-service
+  namespace: aks-store-demo
+spec:
+  selector:
+    app: order-service
+  ports:
+    - port: 3000
+      targetPort: 3000
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service
+  namespace: aks-store-demo
+spec:
+  selector:
+    app: product-service
+  ports:
+    - port: 3002
+      targetPort: 3002
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: store-admin
+  namespace: aks-store-demo
+spec:
+  selector:
+    app: store-admin
+  ports:
+    - port: 8081
+      targetPort: 8081
+  type: ClusterIP
+---
+# store-front is exposed externally via the AGIC Ingress below
+apiVersion: v1
+kind: Service
+metadata:
+  name: store-front
+  namespace: aks-store-demo
+spec:
+  selector:
+    app: store-front
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: ClusterIP
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# ingress.yaml — AGIC Ingress for store-front
+# Annotation kubernetes.io/ingress.class: azure/application-gateway routes
+# traffic through the Application Gateway WAF v2 deployed in lab-02.
+#
+# Replace <STORE_FRONT_HOSTNAME> with the public hostname mapped to
+# the Application Gateway frontend IP.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: store-front-ingress
+  namespace: aks-store-demo
+  annotations:
+    kubernetes.io/ingress.class: azure/application-gateway
+    appgw.ingress.kubernetes.io/ssl-redirect: "false"
+    appgw.ingress.kubernetes.io/use-private-ip: "false"
+    appgw.ingress.kubernetes.io/waf-policy-for-path: "/subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Network/ApplicationGatewayWebApplicationFirewallPolicies/<POLICY_NAME>"
+spec:
+  rules:
+    - host: <STORE_FRONT_HOSTNAME>
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: store-front
+                port:
+                  number: 80

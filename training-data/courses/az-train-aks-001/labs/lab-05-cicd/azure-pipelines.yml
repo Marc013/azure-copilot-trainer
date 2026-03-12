@@ -1,0 +1,190 @@
+# Azure DevOps Pipeline: Build and Deploy aks-store-demo to Private AKS
+# Objective IDs: CICD-01, CICD-02, CICD-03, CICD-04
+#
+# Prerequisites:
+#   - Service connection 'sc-acr' (Docker Registry type pointing to ACR)
+#   - Service connection 'sc-aks-spoke' (Azure Resource Manager, contributor on spoke RG)
+#   - Variable group 'aks-training-vars' with: ACR_NAME, AKS_CLUSTER_NAME, RESOURCE_GROUP
+#   - Self-hosted agent pool 'aks-agent-pool' deployed into spoke VNet
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - src/**
+
+pr:
+  branches:
+    include:
+      - main
+
+variables:
+  - group: aks-training-vars
+  - name: imageTag
+    value: '$(Build.BuildId)'
+  - name: namespace
+    value: 'aks-store-demo'
+
+stages:
+# ─────────────────────────────────────────────────────────────────────────────
+# Stage 1: Build – compile images and push to ACR (CICD-01)
+# ─────────────────────────────────────────────────────────────────────────────
+  - stage: Build
+    displayName: 'Build and Push Images to ACR'
+    jobs:
+      - job: BuildImages
+        displayName: 'Build all microservice images'
+        pool:
+          name: 'aks-agent-pool'   # Self-hosted agent in spoke VNet
+        steps:
+          - checkout: self
+
+          - task: Docker@2
+            displayName: 'Build and push store-front'
+            inputs:
+              containerRegistry: 'sc-acr'
+              repository: 'aks-store-demo/store-front'
+              command: buildAndPush
+              Dockerfile: 'src/store-front/Dockerfile'
+              buildContext: 'src/store-front'
+              tags: |
+                $(imageTag)
+                latest
+
+          - task: Docker@2
+            displayName: 'Build and push store-admin'
+            inputs:
+              containerRegistry: 'sc-acr'
+              repository: 'aks-store-demo/store-admin'
+              command: buildAndPush
+              Dockerfile: 'src/store-admin/Dockerfile'
+              buildContext: 'src/store-admin'
+              tags: |
+                $(imageTag)
+                latest
+
+          - task: Docker@2
+            displayName: 'Build and push order-service'
+            inputs:
+              containerRegistry: 'sc-acr'
+              repository: 'aks-store-demo/order-service'
+              command: buildAndPush
+              Dockerfile: 'src/order-service/Dockerfile'
+              buildContext: 'src/order-service'
+              tags: |
+                $(imageTag)
+                latest
+
+          - task: Docker@2
+            displayName: 'Build and push product-service'
+            inputs:
+              containerRegistry: 'sc-acr'
+              repository: 'aks-store-demo/product-service'
+              command: buildAndPush
+              Dockerfile: 'src/product-service/Dockerfile'
+              buildContext: 'src/product-service'
+              tags: |
+                $(imageTag)
+                latest
+
+          # Publish Kubernetes manifests as pipeline artifact
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish Kubernetes manifests'
+            inputs:
+              targetPath: 'labs/lab-11-aks-store-demo'
+              artifact: 'kubernetes-manifests'
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Stage 2: Deploy to Dev (auto-trigger after build — CICD-02)
+# ─────────────────────────────────────────────────────────────────────────────
+  - stage: DeployDev
+    displayName: 'Deploy to Dev AKS'
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - deployment: DeployToDev
+        displayName: 'Deploy aks-store-demo to dev namespace'
+        pool:
+          name: 'aks-agent-pool'
+        environment: 'aks-dev'   # No approval gate for dev
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: kubernetes-manifests
+
+                - task: KubernetesManifest@1
+                  displayName: 'Deploy manifests to dev'
+                  inputs:
+                    action: deploy
+                    connectionType: azureResourceManager
+                    azureSubscriptionConnection: 'sc-aks-spoke'
+                    azureResourceGroup: '$(RESOURCE_GROUP)'
+                    kubernetesCluster: '$(AKS_CLUSTER_NAME)'
+                    namespace: '$(namespace)'
+                    manifests: '$(Pipeline.Workspace)/kubernetes-manifests/manifests.yaml'
+                    containers: |
+                      $(ACR_NAME).azurecr.io/aks-store-demo/store-front:$(imageTag)
+                      $(ACR_NAME).azurecr.io/aks-store-demo/store-admin:$(imageTag)
+                      $(ACR_NAME).azurecr.io/aks-store-demo/order-service:$(imageTag)
+                      $(ACR_NAME).azurecr.io/aks-store-demo/product-service:$(imageTag)
+
+                # CICD-04: Automated rollback on failure
+                - task: AzureCLI@2
+                  displayName: 'Validate deployment rollout'
+                  inputs:
+                    azureSubscription: 'sc-aks-spoke'
+                    scriptType: pscore
+                    scriptLocation: inlineScript
+                    inlineScript: |
+                      az aks get-credentials --resource-group $(RESOURCE_GROUP) --name $(AKS_CLUSTER_NAME) --overwrite-existing
+                      kubelogin convert-kubeconfig -l azurecli
+                      $deployments = @('store-front', 'store-admin', 'order-service', 'product-service')
+                      foreach ($d in $deployments) {
+                          $result = kubectl rollout status deployment/$d -n $(namespace) --timeout=5m 2>&1
+                          if ($LASTEXITCODE -ne 0) {
+                              Write-Warning "Rollback triggered for $d"
+                              kubectl rollout undo deployment/$d -n $(namespace)
+                              throw "Deployment $d failed — rolled back"
+                          }
+                          Write-Host "✓ $d is healthy"
+                      }
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Stage 3: Deploy to Production (manual approval gate — CICD-03)
+# ─────────────────────────────────────────────────────────────────────────────
+  - stage: DeployProd
+    displayName: 'Deploy to Production AKS'
+    dependsOn: DeployDev
+    condition: and(succeeded(), eq(variables['Build.SourceBranchName'], 'main'))
+    jobs:
+      - deployment: DeployToProd
+        displayName: 'Deploy aks-store-demo to prod namespace'
+        pool:
+          name: 'aks-agent-pool'
+        environment: 'aks-production'  # Approval gate configured in Azure DevOps environment settings
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - download: current
+                  artifact: kubernetes-manifests
+
+                - task: KubernetesManifest@1
+                  displayName: 'Deploy manifests to production'
+                  inputs:
+                    action: deploy
+                    connectionType: azureResourceManager
+                    azureSubscriptionConnection: 'sc-aks-spoke'
+                    azureResourceGroup: '$(RESOURCE_GROUP)'
+                    kubernetesCluster: '$(AKS_CLUSTER_NAME)'
+                    namespace: '$(namespace)'
+                    manifests: '$(Pipeline.Workspace)/kubernetes-manifests/manifests.yaml'
+                    containers: |
+                      $(ACR_NAME).azurecr.io/aks-store-demo/store-front:$(imageTag)
+                      $(ACR_NAME).azurecr.io/aks-store-demo/store-admin:$(imageTag)
+                      $(ACR_NAME).azurecr.io/aks-store-demo/order-service:$(imageTag)
+                      $(ACR_NAME).azurecr.io/aks-store-demo/product-service:$(imageTag)
