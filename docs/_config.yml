@@ -21,7 +21,7 @@ nav_sort: order
 # Footer
 footer_content: >-
   Content grounded in
-  <a href="https://learn.microsoft.com" target="_blank">learn.microsoft.com</a>.
+  <a href="https://learn.microsoft.com" target="_blank">learn.microsoft.com</a>.<br>
   Released under the MIT License.
 
 # Callout styling
