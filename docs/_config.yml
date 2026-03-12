@@ -1,0 +1,52 @@
+title: Azure Training Agent Skills
+description: >-
+  A production-ready blueprint for GitHub Copilot Agent Skills in VS Code,
+  focused on Azure training delivery with live MCP server integration.
+
+remote_theme: just-the-docs/just-the-docs
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-seo-tag
+
+# Theme settings
+color_scheme: light
+search_enabled: true
+heading_anchors: true
+permalink: pretty
+
+# Navigation
+nav_sort: order
+
+# Aux links (top-right corner)
+aux_links:
+  "View on GitHub":
+    - "//github.com/your-org/azure-copilot-trainer"
+aux_links_new_tab: true
+
+# Footer
+footer_content: >-
+  Content grounded in
+  <a href="https://learn.microsoft.com" target="_blank">learn.microsoft.com</a>.
+  Released under the MIT License.
+
+# Callout styling
+callouts_level: quiet
+callouts:
+  note:
+    title: Note
+    color: blue
+  important:
+    title: Important
+    color: purple
+  warning:
+    title: Warning
+    color: yellow
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: pages
+    values:
+      layout: default

@@ -1,3 +1,9 @@
+---
+title: How To Use
+nav_order: 2
+description: Step-by-step setup and usage instructions for the Azure Training Agent Skills package.
+---
+
 # How To Use The Azure Training Agent Skills Package
 
 ## Before you start

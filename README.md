@@ -89,4 +89,32 @@ Use from chat by typing `/` and selecting:
 
 For a full operational guide, see [docs/how-to-use.md](docs/how-to-use.md).
 
+## GitHub Pages
+
+This repo includes a Jekyll-based documentation site in the `docs/` folder, built with the [just-the-docs](https://just-the-docs.com) theme.
+
+To enable GitHub Pages:
+
+1. Go to **Settings › Pages** in your GitHub repository.
+2. Under **Source**, select **Deploy from a branch**.
+3. Set **Branch** to `main` (or your default branch) and **Folder** to `/docs`.
+4. Click **Save**. GitHub will build and publish the site automatically on every push to that branch.
+
+The published site will have two pages:
+
+| Page       | URL path       | Content                                                          |
+| ---------- | -------------- | ---------------------------------------------------------------- |
+| Home       | `/`            | Project overview, feature list, MCP server table, prompt summary |
+| How To Use | `/how-to-use/` | Full step-by-step setup and usage guide                          |
+
+To preview the site locally before pushing:
+
+```
+cd docs
+bundle install
+bundle exec jekyll serve
+```
+
+Then open `http://localhost:4000` in your browser. Ruby and Bundler are required for local preview.
+
 [1]: /docs/media/azure_copilot_trainer.png
