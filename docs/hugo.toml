@@ -1,9 +1,10 @@
 baseURL = "/"
 languageCode = "en-us"
 title = "Azure Copilot Trainer"
-contentDir = "docs"
+contentDir = "content"
 enableRobotsTXT = true
 disableKinds = ["taxonomy", "term"]
+publishDir = "_site"
 
 [module]
   [[module.imports]]

@@ -44,15 +44,17 @@ jobs:
           extended: true
 
       - name: Install CSS tooling
+        working-directory: ./docs
         run: npm install
 
       - name: Build site
+        working-directory: ./docs
         run: hugo --gc --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./public
+          path: ./docs/_site
 
   deploy:
     environment:
