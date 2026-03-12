@@ -18,6 +18,24 @@ This package provides a production-ready blueprint and starter implementation fo
 - VS Code with GitHub Copilot and Agent mode enabled.
 - Agent Skills enabled: setting `chat.useAgentSkills` = true.
 - Skills stored in `.github/skills` (project-level, versioned with repo).
+- **Azure MCP Server**: active in this workspace (provides Azure service, resource, and best-practices tools). Configured via `ms-azuretools.vscode-azure-mcp-server` extension.
+- **Microsoft Learn MCP Server**: active in this workspace (provides documentation search and retrieval tools). Configured in `.vscode/mcp.json`.
+- **Bicep MCP Server**: active in this workspace (provides Bicep best practices, file diagnostics, resource schema, and AVM metadata tools). Configured via `ms-azuretools.vscode-bicep` extension.
+- **PowerShell MCP Server**: active in this workspace (provides PowerShell script execution, syntax validation, and automation tooling). Configured via `ms-vscode.powershell` extension.
+- Node.js 18+ (required to run npm-based MCP servers via `npx`).
+
+## MCP server dependency
+
+This solution uses four MCP servers to provide grounded, live-retrieved Azure content, official documentation, infrastructure-as-code tooling, and automation capabilities:
+
+| Server                                      | Purpose                                                                     | Provided by                                       |
+| ------------------------------------------- | --------------------------------------------------------------------------- | ------------------------------------------------- |
+| Azure MCP                                   | Azure best practices, resource schemas, service documentation               | `ms-azuretools.vscode-azure-mcp-server` extension |
+| Microsoft Learn MCP (`@microsoft/docs-mcp`) | Documentation search, page fetch, official code samples                     | `.vscode/mcp.json` (npm)                          |
+| Bicep MCP                                   | Bicep best practices, file diagnostics, resource type schemas, AVM metadata | `ms-azuretools.vscode-bicep` extension            |
+| PowerShell MCP                              | PowerShell script execution, syntax validation, automation task tooling     | `ms-vscode.powershell` extension                  |
+
+Extension-provided MCP servers (Azure MCP, Bicep MCP, PowerShell MCP) are auto-discovered by VS Code when the corresponding extension is installed and active — no `mcp.json` entry is required for those. The Microsoft Learn MCP server is configured in `.vscode/mcp.json` and requires Node.js 18+ so `npx` can resolve and run the package.
 
 ## Skill map
 

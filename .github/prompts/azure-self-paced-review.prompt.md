@@ -17,10 +17,10 @@ Run a periodic learner review and adapt the training path.
 ## Required execution order
 
 1. Run /azure-learner-state with action validate or resume.
-2. Extract progress, score trends, and weak areas from learner state and checkpoints.
-3. Run /azure-assessment-engine to generate a short diagnostic check for top weak objectives.
-4. Map remediation tasks to objective IDs and service modules.
-5. Run /azure-source-grounding for any new technical claims in remediation guidance.
+2. Extract progress, score trends, and weak areas from learner state and checkpoints. Note separately whether weak areas are in IaC (Bicep) or automation (PowerShell) objectives.
+3. Run /azure-assessment-engine to generate a short diagnostic check for top weak objectives. Use `microsoft_docs_search` to ground diagnostic question content. Use `mcp_bicep_get_bicep_file_diagnostics` and the PowerShell MCP server to validate any IaC or automation items in the diagnostic.
+4. Map remediation tasks to objective IDs and service modules. Ensure remediation for IaC weak areas includes Bicep exercises and remediation for automation weak areas includes PowerShell tasks.
+5. Run /azure-source-grounding for any new technical claims in remediation guidance. Use `microsoft_docs_search` and `microsoft_docs_fetch` to retrieve and verify evidence.
 6. Run /azure-learner-state with action save to persist updated remediation plan and next checkpoint.
 
 ## Output format
@@ -41,4 +41,4 @@ Run a periodic learner review and adapt the training path.
 
 - Do not fabricate trend data if state history is incomplete.
 - Mark uncertain recommendations and include verification tasks when needed.
-- Support technical recommendations with proof links from learn.microsoft.com only.
+- Support technical recommendations with proof links sourced from `microsoft_docs_search` or `microsoft_docs_fetch` MCP retrieval, using learn.microsoft.com only.

@@ -3,6 +3,9 @@
     "davidanson.vscode-markdownlint",
     "github.copilot-chat",
     "ms-azuretools.vscode-azure-github-copilot",
+    "ms-azuretools.vscode-azure-mcp-server",
+    "ms-azuretools.vscode-bicep",
+    "ms-vscode.powershell",
     "yzhang.markdown-all-in-one"
   ]
 }

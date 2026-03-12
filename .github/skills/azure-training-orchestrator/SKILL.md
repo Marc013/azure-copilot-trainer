@@ -48,6 +48,15 @@ Create a complete training plan that is pedagogically structured and operational
 - Handoff list for scenario and assessment skills.
 - Proof links section for every module and assessment claim using learn.microsoft.com URLs only.
 
+## MCP tools
+
+- Call `microsoft_docs_search` to ground module prerequisites, learning objectives, and service descriptions before generating curriculum content.
+- Call `microsoft_docs_fetch` to retrieve full documentation pages when deep technical grounding is required for a module.
+- Call `mcp_azure_mcp_get_bestpractices` to incorporate current Azure service configuration and operational best practices into the program design.
+- Call `mcp_bicep_get_bicep_best_practices` to ensure every program that includes IaC modules reflects current Bicep authoring standards.
+- Call `mcp_bicep_list_avm_metadata` to identify relevant Azure Verified Modules when designing infrastructure lab tracks.
+- Use the PowerShell MCP server to validate that automation scripts and runbook tasks included in module designs are syntactically correct before publishing.
+
 ## Composition rules
 
 - Delegate service-specific module content to `/azure-service-path-apps`.
@@ -55,4 +64,5 @@ Create a complete training plan that is pedagogically structured and operational
 - Delegate trust checks to `/azure-source-grounding`.
 - Delegate scoring assets to `/azure-assessment-engine`.
 - Delegate acceptance checks to `/azure-quality-gates`.
-- Do not include claims without learn.microsoft.com proof links.
+- Do not include claims without learn.microsoft.com proof links sourced from MCP retrieval.
+- Every training program must include at least one Bicep IaC module and at least one PowerShell automation module.

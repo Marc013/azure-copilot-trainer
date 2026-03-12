@@ -37,4 +37,4 @@ Resume a learner after interruption and continue with minimal friction.
 
 ## Safety and trust rules
 
-- For technical recap or remediation guidance, include proof links to learn.microsoft.com only.
+- For technical recap or remediation guidance, use `microsoft_docs_search` and `microsoft_docs_fetch` to retrieve current learn.microsoft.com documentation. Include proof links from MCP retrieval only.

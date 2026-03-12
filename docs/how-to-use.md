@@ -1,341 +1,328 @@
 # How To Use The Azure Training Agent Skills Package
 
-## Purpose
+## Before you start
 
-This guide explains how to operate the skill package in Visual Studio Code from first-time setup to day-to-day use in authoring, self-paced delivery, learner resume, and quality control.
+Install and configure the following before using this package.
 
-## What this package contains
+### 1. Install Visual Studio Code
 
-### Skills
+Download and install VS Code from code.visualstudio.com if you have not already done so.
 
-1. .github/skills/azure-training-orchestrator
-2. .github/skills/azure-service-path-apps
-3. .github/skills/azure-scenario-engine
-4. .github/skills/azure-assessment-engine
-5. .github/skills/azure-source-grounding
-6. .github/skills/azure-learner-state
-7. .github/skills/azure-quality-gates
+### 2. Install Node.js 18 or later
 
-### Prompts
+The MCP servers configured in `.vscode/mcp.json` are started via `npx`. Node.js 18 or later is required.
 
-1. .github/prompts/azure-training-author.prompt.md
-2. .github/prompts/azure-self-paced-session.prompt.md
-3. .github/prompts/azure-learner-resume.prompt.md
-4. .github/prompts/azure-self-paced-review.prompt.md
+1. Download Node.js from nodejs.org and run the installer.
+2. Open a terminal and run the following to confirm the version:
 
-### Runtime data
+   ```
+   node --version
+   ```
 
-1. training-data/learners
-2. training-data/checkpoints
+   The output must show `v18` or higher.
 
-## Scope and expectations
+### 3. Install the Azure CLI and sign in
 
-This starter package includes a full training workflow, but only one service-path skill is domain-specialized today:
+The Azure MCP server uses your active Azure CLI session.
 
-1. azure-service-path-apps is optimized for App Service, Functions, Storage, Key Vault, and Monitor.
-2. You can still author tracks for other services (such as AKS) using the orchestration flow and prompts.
-3. For deep and highly deterministic AKS-only training output, add a dedicated AKS skill in .github/skills and include it in your prompt workflow.
+1. Install the Azure CLI from learn.microsoft.com/cli/azure/install-azure-cli.
+2. Open a terminal and run:
 
-## Prerequisites
+   ```
+   az login
+   ```
 
-1. Visual Studio Code with GitHub Copilot access.
-2. Agent mode enabled in chat.
-3. Agent Skills enabled in settings.
-4. Open this folder as the active workspace root.
+3. Complete the browser sign-in. Confirm you are signed in to the correct tenant and subscription:
 
-## Step 1: Verify skills and prompts are in the expected locations
+   ```
+   az account show
+   ```
 
-Confirm these folders exist:
+### 4. Install GitHub Copilot in VS Code
 
-1. .github/skills
-2. .github/prompts
-3. training-data/learners
-4. training-data/checkpoints
+1. Open VS Code.
+2. Open the Extensions panel (`Ctrl+Shift+X`).
+3. Search for **GitHub Copilot Chat** and install it.
+4. Sign in with your GitHub account when prompted.
 
-If these are present, VS Code can discover the skills and prompts.
+### 5. Install the recommended VS Code extensions
 
-## Step 2: Enable Agent Skills in VS Code
+This workspace includes an `extensions.json` with all required extension recommendations.
 
-Open Settings and enable chat.useAgentSkills.
+1. Open VS Code.
+2. Open the Extensions panel (`Ctrl+Shift+X`).
+3. Click the filter icon in the search bar and select **Recommended**.
+4. Install all of the following if they are not already installed:
 
-For first-time setup in VS Code:
+   | Extension            | Publisher   | Purpose                                  |
+   | -------------------- | ----------- | ---------------------------------------- |
+   | GitHub Copilot Chat  | GitHub      | Agent mode and skills                    |
+   | Azure GitHub Copilot | Microsoft   | Azure-aware Copilot guidance             |
+   | Azure MCP Server     | Microsoft   | Azure MCP tools                          |
+   | Bicep                | Microsoft   | Bicep MCP tools for IaC labs             |
+   | PowerShell           | Microsoft   | PowerShell MCP tools for automation labs |
+   | Markdown All in One  | Yu Zhang    | Markdown editing                         |
+   | markdownlint         | David Anson | Markdown linting                         |
 
-1. Open Settings.
-2. Search for chat.useAgentSkills.
-3. Set it to true.
-4. Ensure Copilot Chat is in Agent mode.
+---
 
-Recommended additional setting:
+## Set up the workspace
 
-1. Keep custom instructions concise and project-specific.
-2. Use skills for workflows, not for broad coding style rules.
+### 1. Open the repo folder in VS Code
 
-## Step 3: Confirm discovery in chat
+1. In VS Code, go to **File › Open Folder**.
+2. Select the root of this repository (`azure-copilot-trainer`).
+3. VS Code must have this exact folder as the workspace root for skills and prompts to be discovered correctly.
 
-1. Open Copilot Chat.
-2. Type /.
-3. Verify these entries appear:
+### 2. Accept the extension recommendations
 
-- /azure-training-author
-- /azure-self-paced-session
-- /azure-learner-resume
-- /azure-self-paced-review
+If VS Code shows a notification asking you to install recommended extensions, click **Install All**.
 
-If they do not appear:
+---
 
-1. Re-open the workspace folder.
-2. Confirm SKILL names match their directory names exactly.
-3. Confirm prompt files end with .prompt.md.
-4. Reload window.
+## Start the MCP servers
 
-## First 15-minute quick start
+This package uses four MCP servers. Two are started automatically from `.vscode/mcp.json`. Two are provided by installed extensions and require no manual action.
 
-If you are new to Agent Skills, use this exact sequence:
+### Azure MCP server and Microsoft Learn MCP server
 
-- Open Copilot Chat and switch to Agent mode.
-- Run /azure-training-author and paste a short request:
+When you open the workspace, VS Code detects `.vscode/mcp.json` and offers to start the servers automatically.
 
-```text
-Create a 4-week Azure training plan for a beginner cloud engineer.
-Focus on Azure application platform fundamentals.
-Use 3 hours per week and include hands-on labs, checks, and a final assessment.
+1. Look for a notification in the bottom-right corner asking to start MCP servers.
+2. Click **Start** or **Allow**.
+
+If you do not see a notification, start them manually:
+
+1. Open the Command Palette (`Ctrl+Shift+P`).
+2. Type **MCP: Start Server** and press Enter.
+3. Select `azure-mcp` and confirm.
+4. Repeat and select `microsoft-learn-mcp`.
+
+To verify both servers are running:
+
+1. Open the **Output** panel (`Ctrl+Shift+U`).
+2. In the dropdown, select **MCP: azure-mcp** and confirm no errors are shown.
+3. In the dropdown, select **MCP: microsoft-learn-mcp** and confirm no errors are shown.
+
+If the Azure MCP server fails to start, run `az login` in a terminal and try again.
+
+If the Microsoft Learn MCP server fails to start, run `node --version` and confirm it shows v18 or higher.
+
+### Bicep MCP server
+
+No manual action required. The Bicep extension (`ms-azuretools.vscode-bicep`) automatically registers its MCP server when it is installed and active.
+
+### PowerShell MCP server
+
+No manual action required. The PowerShell extension (`ms-vscode.powershell`) automatically registers its MCP server when it is installed and active.
+
+---
+
+## Enable Agent Skills
+
+1. Open VS Code Settings (`Ctrl+,`).
+2. In the search box, type `chat.useAgentSkills`.
+3. Check the box to set it to `true`.
+
+---
+
+## Switch Copilot Chat to Agent mode
+
+1. Open Copilot Chat (`Ctrl+Alt+I`).
+2. Click the mode selector in the chat input bar (it shows **Ask** or **Edit** by default).
+3. Select **Agent**.
+
+---
+
+## Verify the setup
+
+1. Open Copilot Chat in Agent mode.
+2. Click inside the chat input bar.
+3. Type `/` — a dropdown list of available prompts and skills should appear.
+4. Confirm you see all four prompts:
+   - `/azure-training-author`
+   - `/azure-self-paced-session`
+   - `/azure-learner-resume`
+   - `/azure-self-paced-review`
+
+If the prompts do not appear:
+
+1. Confirm the workspace root is the `azure-copilot-trainer` folder (not a subfolder of it).
+2. Confirm the four `.prompt.md` files exist in `.github/prompts/`.
+3. Confirm `chat.useAgentSkills` is set to `true`.
+4. Close and reopen VS Code, then check again.
+
+---
+
+## Using the prompts
+
+Each prompt runs a full automated workflow using the installed skills and MCP servers. You do not need to call individual skills manually — the prompts orchestrate everything for you.
+
+---
+
+### `/azure-training-author` — Build a training program
+
+Use this to generate a complete Azure training program from scratch.
+
+**Steps:**
+
+1. Open Copilot Chat in Agent mode.
+2. Type `/` and select `/azure-training-author` from the list, or type it in full and press Enter.
+3. In your message, describe the training program you want. Be specific about the audience, duration, services, and any constraints. Example:
+
+   ```
+   Create a 4-week Azure training program for an intermediate platform engineer.
+   Focus on Azure App Service, Azure Functions, Azure Storage, and Azure Key Vault.
+   Use 4 hours per week. Include hands-on Bicep deployment labs, PowerShell automation
+   tasks, checks for understanding, and a final assessment.
+   Industry context: financial services with strict compliance requirements.
+   ```
+
+4. Wait for the agent to complete. It invokes multiple skills automatically and may take several minutes.
+
+**What you will receive:**
+
+- A full program timeline with module names and objective IDs.
+- Hands-on lab steps including Bicep IaC exercises and PowerShell automation tasks.
+- At least two realistic implementation scenarios by role and industry.
+- Module quizzes and a final assessment with answer keys.
+- A trust report listing learn.microsoft.com proof links for every key claim with confidence labels.
+- A quality-gate result: **Pass** means the program is ready to use. **Fail** means corrective actions are listed that you must address before using.
+
+**Example for an advanced AKS end-to-end request:**
+
 ```
+As an Azure engineer with limited knowledge of AKS, create a step-by-step training program
+to implement, operate, and maintain AKS in production.
 
-- Review output sections in this order:
-
-- Program overview and timeline.
-- Module objectives and IDs.
-- Trust report with learn.microsoft.com proof links.
-- Quality-gate pass/fail and remediation actions.
-
-- Run /azure-self-paced-session for learner sample-001, course az-train-apps-001, 60 minutes, objective M2.2.
-- Run /azure-learner-resume to validate continuity.
-- Run /azure-self-paced-review for last 7 days.
-
-## Operating modes
-
-### Mode A: Author a full training program
-
-Use prompt: /azure-training-author
-
-Provide input like:
-
-1. Audience role and level.
-2. Duration and weekly time.
-3. Industry context.
-4. Azure service focus.
-5. Constraints: budget, compliance, SLO, region.
-
-What happens behind the scenes:
-
-1. Orchestrator builds curriculum skeleton and objective map.
-2. Service-path skill builds Azure module content and labs.
-3. Scenario engine adds realistic implementation scenarios.
-4. Assessment engine builds checks and final assessment.
-5. Source-grounding validates claims with learn.microsoft.com proof links and confidence labels.
-6. Quality-gates evaluates release readiness.
-
-Expected output:
-
-1. Program timeline and modules.
-2. Objective-linked assessments.
-3. Scenario artifacts.
-4. Trust report with learn.microsoft.com proof links and confidence labels.
-5. Pass or fail quality decision with remediation steps.
-
-Example authoring request for AKS end-to-end implementation:
-
-1. Use prompt: /azure-training-author
-2. Paste this request:
-
-```text
-As an Azure engineer with limited knowledge of Azure Kubernetes Service (AKS), I need a step-by-step training program that teaches me to implement, operate, and maintain AKS in production.
-
-Training goals:
-- Cover all major AKS topics from fundamentals to operations.
-- Build a complete functional Azure solution by the end of the training.
-- Deploy one or more prebuilt containerized sample apps to AKS. Do not include container image authoring in scope.
-- Use Azure-Samples/aks-store-demo as the sample application source.
-- Use Azure Container Registry (ACR) as the image registry.
-- Use Azure DevOps pipeline for build and deployment automation to AKS.
+Goals:
+- Cover AKS fundamentals through enterprise operations.
+- Deploy the Azure-Samples/aks-store-demo app to AKS using ACR as the image registry.
+- Use Azure DevOps pipeline for CI/CD to AKS.
 - Use Application Gateway Ingress Controller (AGIC) for ingress.
-- Ensure the AKS implementation is private, including private cluster and private networking patterns.
+- Implement a private AKS cluster with private networking.
 
-Delivery requirements:
-- Teach in progressive hands-on labs with clear explanations at each step.
-- Include architecture, networking, security, identity, scaling, upgrades, observability, backup/DR, governance, and cost management.
-- Include checkpoints, practical validations, troubleshooting tasks, and final assessment.
-- Include learn.microsoft.com proof links and confidence labels for all key claims.
-
-Constraints:
-- Keep labs realistic for enterprise use.
-- Include recommended defaults, trade-off analysis, and common pitfalls.
-- Ensure final outcome is a fully working private AKS + AGIC + ACR + Azure DevOps deployment workflow.
+Requirements:
+- Progressive hands-on labs covering architecture, networking, security, identity, scaling,
+  upgrades, observability, backup/DR, governance, and cost management.
+- Bicep IaC labs for all infrastructure provisioning.
+- PowerShell automation tasks for operational workflows.
+- Checkpoints, practical validations, troubleshooting tasks, and final assessment.
+- learn.microsoft.com proof links and confidence labels for all key claims.
 ```
 
-Expected result pattern for this example:
+---
 
-1. A multi-module learning path from AKS basics to enterprise operations.
-2. Hands-on labs that progressively build the private AKS platform and deploy the sample app.
-3. Pipeline-focused modules that implement CI and CD from Azure DevOps to AKS via ACR.
-4. Security and operations modules for day-2 management, monitoring, and incident response.
-5. Final capstone validation of a working end-to-end solution in Azure.
+### `/azure-self-paced-session` — Run a learning session
 
-Important note for this AKS example:
+Use this to run one timed learning session for a specific learner on a specific objective.
 
-1. This repository does not currently include a dedicated AKS skill under .github/skills.
-2. The request is valid and can still be generated through orchestration, scenario, assessment, grounding, and quality-gates.
-3. If you need stricter AKS coverage consistency across runs, add an AKS-focused skill and reference it in the prompt workflow.
+**Steps:**
 
-### Mode B: Run a self-paced learning session
+1. Open Copilot Chat in Agent mode.
+2. Type `/` and select `/azure-self-paced-session`, or type it in full and press Enter.
+3. Provide the following details in your message:
 
-Use prompt: /azure-self-paced-session
+   ```
+   Learner ID: sample-001
+   Course ID: az-train-apps-001
+   Session length: 60 minutes
+   Objective: M2.2
+   ```
 
-Provide input like:
+   A ready-to-use learner state file for `sample-001` already exists at `training-data/learners/sample-learner.json`. Use this learner ID for your first test run.
 
-1. Learner ID.
-2. Course ID.
-3. Session duration.
-4. Target module or objective.
+**What you will receive:**
 
-What happens:
+- A session objective briefing with expected outcomes.
+- A self-paced implementation task. It will always include a Bicep lab and a PowerShell automation task.
+- A formative check for understanding with results and any detected weak areas.
+- A recap summary and a transfer question.
+- A checkpoint confirmation. The learner state file at `training-data/learners/sample-001.json` is saved automatically with an updated module/objective cursor and a new resume token.
 
-1. Learner state is validated or resumed.
-2. Session objective is delivered with independent activity.
-3. Formative check runs and weak areas are detected.
-4. Recap is generated.
-5. State is saved with a new checkpoint and token.
+---
 
-Expected output:
+### `/azure-learner-resume` — Resume an interrupted session
 
-1. Session objective summary.
-2. Self-paced task list and completion criteria.
-3. Check results and weak area notes.
-4. New checkpoint confirmation.
+Use this when a learner needs to continue exactly where they left off.
 
-### Mode C: Resume interrupted learning
+**Steps:**
 
-Use prompt: /azure-learner-resume
+1. Open Copilot Chat in Agent mode.
+2. Type `/` and select `/azure-learner-resume`, or type it in full and press Enter.
+3. Provide the learner ID in your message:
 
-Provide input like:
+   ```
+   Learner ID: sample-001
+   ```
 
-1. Learner ID.
-2. Optional resume token.
-3. Session window if needed.
+   You can also include the resume token if you have it from the last checkpoint output. It is optional.
 
-What happens:
+**What you will receive:**
 
-1. State and token are validated.
-2. Learner cursor is restored exactly.
-3. If token mismatch occurs, recovery checkpoint is used.
-4. Brief reactivation recap is delivered.
-5. Session continues and a new checkpoint is saved.
+- A resume validation result:
+  - **Valid** — the state file and token are intact, session continues from the saved position.
+  - **Recovered** — the primary state was invalid and the latest checkpoint was used to restore position. The agent will tell you which checkpoint was used.
+- The restored position: module, lesson, objective, and activity index.
+- A brief reactivation recap of what was covered last.
+- If high-severity weak areas are present from the previous session, a targeted remediation check runs automatically.
+- The session then continues from the restored position and a new checkpoint is saved.
 
-Expected output:
+**If the resume fails entirely:**
 
-1. Resume validation status.
-2. Restored module, lesson, objective, activity index.
-3. Recovery details if applicable.
-4. Next action estimate.
+The agent will describe the reason (missing state file, schema version mismatch, or token checksum failure) and tell you what minimum information is needed to create a recovery plan. Do not fabricate or manually edit state files.
 
-### Mode D: Run a weekly self-paced progress review
+---
 
-Use prompt: /azure-self-paced-review
+### `/azure-self-paced-review` — Weekly progress review
 
-Provide input like:
+Use this at the end of each week to review progress, find weak areas, and plan the next week.
 
-1. Learner ID.
-2. Course ID.
-3. Review window such as last 7 days.
-4. Optional target completion date.
+**Steps:**
 
-What happens:
+1. Open Copilot Chat in Agent mode.
+2. Type `/` and select `/azure-self-paced-review`, or type it in full and press Enter.
+3. Provide the following details in your message:
 
-1. Learner state and checkpoints are analyzed.
-2. Weak areas and trend patterns are identified.
-3. A targeted remediation plan is generated.
-4. Updated next-week goals are persisted to learner state.
+   ```
+   Learner ID: sample-001
+   Course ID: az-train-apps-001
+   Review window: last 7 days
+   Target completion date: 2026-06-01
+   ```
 
-Expected output:
+**What you will receive:**
 
-1. Weekly progress delta.
-2. Ranked weak objectives with evidence.
-3. Remediation plan with time budget and goals.
-4. Checkpoint update confirmation.
+- A weekly progress summary showing the completion percentage change over the review window.
+- The strongest and weakest objective IDs with score evidence from quizzes and practicals.
+- A remediation plan for the next week, including:
+  - Time budget and measurable goals per objective.
+  - Bicep lab exercises assigned to any IaC weak areas.
+  - PowerShell tasks assigned to any automation weak areas.
+- A suggested session cadence for the coming week.
+- A checkpoint update confirmation with a new resume token.
 
-## Learner state operations
+**Remediation thresholds applied automatically:**
 
-### Where state lives
+- Quiz average below 0.75: foundational remediation is scheduled before advanced labs.
+- Practical average below 0.80: guided troubleshooting tasks are assigned.
+- No high-severity weak areas remaining: the next module is unlocked automatically.
 
-1. Primary learner file: training-data/learners/<learner-id>.json
-2. Checkpoint snapshots: training-data/checkpoints/<learner-id>-<timestamp>.json
+---
 
-### State schema
+## Learner data files
 
-Use schema at:
+Learner state is managed automatically by the prompts. You do not need to edit these files manually.
 
-1. .github/skills/azure-learner-state/state.schema.json
+| Location                                                  | Purpose                                                                        |
+| --------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `training-data/learners/<learner-id>.json`                | Primary learner state: current position, scores, weak areas, resume token      |
+| `training-data/checkpoints/<learner-id>-<timestamp>.json` | Immutable checkpoint snapshots taken after each session                        |
+| `training-data/learners/sample-learner.json`              | Pre-built sample state for learner `sample-001` — use this for your first test |
 
-Core tracked fields:
+To add a new learner, simply provide a new learner ID in any prompt. The agent creates the state file on the first save.
 
-1. current pointer for exact resume location
-2. progress percentages by module
-3. quiz and practical score history
-4. weak areas with evidence
-5. checkpoint timeline
-6. resume token metadata
-7. privacy retention values
-
-### Resume token generation
-
-Token helper script:
-
-1. .github/skills/azure-learner-state/resume-token.ps1
-
-Use case:
-
-1. Validate token integrity from stable learning coordinates.
-2. Detect tampered or stale resume state.
-
-## Source-grounding and trust checks
-
-Mandatory policy:
-
-1. Use only learn.microsoft.com links as sources for training claims.
-2. Every key claim must include a verifiable proof link to learn.microsoft.com.
-3. Any claim without a learn.microsoft.com proof link is unverified and must not be released.
-
-### When to run
-
-1. Before publishing any module set.
-2. Before final assessments.
-3. When confidence is low or claims are uncertain.
-
-### How to run
-
-1. Invoke source-grounding skill from prompt workflow.
-2. Ensure each key claim has a learn.microsoft.com proof link and confidence label.
-3. Reject outputs with unsupported claims.
-4. Reject outputs with source links outside learn.microsoft.com.
-
-Checklist reference:
-
-1. .github/skills/azure-source-grounding/verification-checklist.md
-
-## Quality-gate enforcement
-
-### What is checked
-
-1. Pedagogy completeness across all modules.
-2. Learner continuity and resume integrity.
-3. Proof-link and confidence coverage for key claims.
-4. learn.microsoft.com-only evidence compliance.
-5. Scenario realism dimensions.
-6. Assessment-to-objective mapping.
-
-Test plan reference:
-
-1. .github/skills/azure-quality-gates/test-cases.md
+Do not delete files in `training-data/checkpoints/`. They are the recovery source if the primary state file becomes corrupt or invalid.
 
 Release decision policy:
 

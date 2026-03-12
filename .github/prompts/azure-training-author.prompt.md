@@ -16,12 +16,12 @@ Use the installed skills to build or update a complete Azure training program.
 
 ## Required execution order
 
-1. Run /azure-training-orchestrator with the provided audience and constraints.
-2. Run /azure-service-path-apps to generate module details for App Service, Functions, Storage, Key Vault, and Monitor.
-3. Run /azure-scenario-engine to generate at least two realistic scenarios by role and industry.
-4. Run /azure-assessment-engine to create module checks and final assessment.
-5. Run /azure-source-grounding and enforce learn.microsoft.com proof links for every key claim with confidence labels.
-6. Run /azure-quality-gates and block release on critical failures.
+1. Run /azure-training-orchestrator with the provided audience and constraints. Use `microsoft_docs_search` and `mcp_azure_mcp_get_bestpractices` to ground the curriculum skeleton. Confirm the program includes at least one Bicep IaC module and one PowerShell automation module.
+2. Run /azure-service-path-apps to generate module details. Use `microsoft_code_sample_search` for official code samples, `mcp_bicep_list_avm_metadata` and `mcp_bicep_get_az_resource_type_schema` for IaC lab content, and the PowerShell MCP server to validate all automation scripts.
+3. Run /azure-scenario-engine to generate at least two realistic scenarios by role and industry. Use `mcp_azure_mcp_get_bestpractices` and `mcp_bicep_get_bicep_best_practices` for IaC scenario tasks and the PowerShell MCP server to validate scenario automation runbooks.
+4. Run /azure-assessment-engine to create module checks and final assessment. Use `microsoft_docs_search` and `microsoft_docs_fetch` for answer key evidence. Use `mcp_bicep_get_bicep_file_diagnostics` to validate Bicep assessment snippets and the PowerShell MCP server to validate PowerShell task rubrics. Confirm the final assessment includes at least one Bicep task and one PowerShell task.
+5. Run /azure-source-grounding. Use `microsoft_docs_search` and `microsoft_docs_fetch` to verify documentation claims. Use `mcp_bicep_get_bicep_file_diagnostics` to validate Bicep code and the PowerShell MCP server to validate PowerShell scripts. Enforce learn.microsoft.com proof links and confidence labels for every key claim.
+6. Run /azure-quality-gates. Use `microsoft_docs_search` to verify proof links, `mcp_bicep_get_bicep_file_diagnostics` to validate IaC artifacts, and the PowerShell MCP server to validate automation scripts. Block release on critical failures.
 
 ## Output format
 
@@ -35,8 +35,8 @@ Use the installed skills to build or update a complete Azure training program.
 
 ## Evidence requirements
 
-- Every key claim must include at least one direct link to learn.microsoft.com.
-- If no learn.microsoft.com proof link exists, label claim as Unverified and exclude it from release output.
+- Every key claim must include at least one direct link to learn.microsoft.com sourced from `microsoft_docs_search` or `microsoft_docs_fetch` MCP retrieval. Do not fabricate or generate documentation URLs.
+- If no learn.microsoft.com proof link is found via MCP retrieval, label claim as Unverified and exclude it from release output.
 - Include a `Proof links` subsection in each module and assessment section.
 
 ## Non-negotiable rules

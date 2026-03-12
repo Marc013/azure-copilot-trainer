@@ -2,6 +2,10 @@
 
 This prompt pack provides ready-to-run workflows that compose the Azure training skills.
 
+## MCP server dependency
+
+These prompts use the Azure MCP server and the Microsoft Learn MCP server for live content retrieval. Both servers must be active. See `.vscode/mcp.json` and `docs/how-to-use.md` for setup instructions.
+
 ## Prompts
 
 1. azure-training-author

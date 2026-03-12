@@ -1,0 +1,22 @@
+{
+  "servers": {
+    "azure-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@azure/mcp@latest",
+        "server",
+        "start"
+      ]
+    },
+    "microsoft-learn-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@microsoft/docs-mcp@latest"
+      ]
+    }
+  }
+}
