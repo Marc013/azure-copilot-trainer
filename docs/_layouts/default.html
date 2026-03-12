@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  <title>{{ page.title }} - {{ site.title }}</title>
+  <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  {% feed_meta %}
+</head>
+
+<body>
+  <main>
+    <header>
+      <div class="header-content">
+        <a href="{{ '/' | relative_url }}" class="site-title">{{ site.title }}</a>
+        <nav>
+          <ul>
+            <li><a href="{{ '/' | relative_url }}" {% if page.url=='/' %}class="active" {% endif %}>Home</a></li>
+            <li><a href="{{ '/how-to-use.html' | relative_url }}" {% if page.url=='/how-to-use.html' %}class="active" {%
+                endif %}>Setup</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <div class="page-wrapper">
+      <div class="content-wrapper">
+        {{ content }}
+      </div>
+    </div>
+
+    <footer>
+      <div class="footer-content">
+        <p>&copy; 2026 Azure Copilot Trainer. All rights reserved.</p>
+        <p>A production-ready blueprint for GitHub Copilot Agent Skills in VS Code.</p>
+      </div>
+    </footer>
+  </main>
+</body>
+
+</html>

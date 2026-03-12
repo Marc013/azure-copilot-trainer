@@ -1,0 +1,17 @@
+title: Azure Copilot Trainer
+description: A production-ready blueprint for GitHub Copilot Agent Skills in VS Code focused on Azure training delivery
+url: ""
+baseurl: "/azure-copilot-trainer"
+
+# Jekyll settings
+markdown: kramdown
+theme: null
+plugins:
+  - jekyll-sitemap
+
+# Exclude unnecessary files
+exclude:
+  - "*.gem"
+  - "*.gemspec"
+  - "Gemfile"
+  - "Gemfile.lock"
