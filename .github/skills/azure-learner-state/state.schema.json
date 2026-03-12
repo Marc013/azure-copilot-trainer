@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AzureTrainingLearnerState",
+  "type": "object",
+  "required": [
+    "learnerId",
+    "courseId",
+    "version",
+    "lastUpdatedUtc",
+    "current",
+    "progress",
+    "scores",
+    "weakAreas",
+    "checkpoints",
+    "resume",
+    "privacy"
+  ],
+  "properties": {
+    "learnerId": { "type": "string", "minLength": 1 },
+    "courseId": { "type": "string", "minLength": 1 },
+    "version": { "type": "string", "pattern": "^v[0-9]+\\.[0-9]+$" },
+    "lastUpdatedUtc": { "type": "string", "format": "date-time" },
+    "current": {
+      "type": "object",
+      "required": ["moduleId", "lessonId", "objectiveId", "activityIndex"],
+      "properties": {
+        "moduleId": { "type": "string" },
+        "lessonId": { "type": "string" },
+        "objectiveId": { "type": "string" },
+        "activityIndex": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "progress": {
+      "type": "object",
+      "required": ["percentComplete", "moduleCompletion"],
+      "properties": {
+        "percentComplete": { "type": "number", "minimum": 0, "maximum": 100 },
+        "moduleCompletion": {
+          "type": "object",
+          "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+    "scores": {
+      "type": "object",
+      "required": ["quizzes", "practicals", "finalAssessment"],
+      "properties": {
+        "quizzes": { "type": "array", "items": { "$ref": "#/$defs/scoreEntry" } },
+        "practicals": { "type": "array", "items": { "$ref": "#/$defs/scoreEntry" } },
+        "finalAssessment": { "$ref": "#/$defs/scoreEntry" }
+      }
+    },
+    "weakAreas": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["objectiveId", "evidence", "severity"],
+        "properties": {
+          "objectiveId": { "type": "string" },
+          "evidence": { "type": "string" },
+          "severity": { "type": "string", "enum": ["low", "medium", "high"] }
+        }
+      }
+    },
+    "checkpoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["checkpointId", "timestampUtc", "moduleId", "objectiveId"],
+        "properties": {
+          "checkpointId": { "type": "string" },
+          "timestampUtc": { "type": "string", "format": "date-time" },
+          "moduleId": { "type": "string" },
+          "objectiveId": { "type": "string" }
+        }
+      }
+    },
+    "resume": {
+      "type": "object",
+      "required": ["token", "issuedUtc", "expiresUtc", "hash"],
+      "properties": {
+        "token": { "type": "string" },
+        "issuedUtc": { "type": "string", "format": "date-time" },
+        "expiresUtc": { "type": "string", "format": "date-time" },
+        "hash": { "type": "string" }
+      }
+    },
+    "privacy": {
+      "type": "object",
+      "required": ["retentionDays", "containsPii"],
+      "properties": {
+        "retentionDays": { "type": "integer", "minimum": 1 },
+        "containsPii": { "type": "boolean" },
+        "purgeAfterUtc": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "$defs": {
+    "scoreEntry": {
+      "type": "object",
+      "required": ["assessmentId", "score", "maxScore", "attempt", "timestampUtc"],
+      "properties": {
+        "assessmentId": { "type": "string" },
+        "score": { "type": "number", "minimum": 0 },
+        "maxScore": { "type": "number", "exclusiveMinimum": 0 },
+        "attempt": { "type": "integer", "minimum": 1 },
+        "timestampUtc": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

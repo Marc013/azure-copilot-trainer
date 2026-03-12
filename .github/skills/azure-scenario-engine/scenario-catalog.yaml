@@ -1,0 +1,36 @@
+archetypes:
+  - id: HC-SRE-01
+    role: sre
+    industry: healthcare
+    level: intermediate
+    context: Regional patient portal modernization with strict uptime and compliance requirements.
+    constraints:
+      budgetCapUsdMonthly: 6000
+      compliance: [hipaa-like, pii-minimization]
+      sloAvailability: 99.95
+      allowedRegions: [westeurope, northeurope]
+    requiredDimensions: [architecture, operations, security, cost, troubleshooting]
+  - id: FIN-PLAT-02
+    role: platform-engineer
+    industry: fintech
+    level: advanced
+    context: Event-driven payment notification platform with burst traffic and audit traceability.
+    constraints:
+      budgetCapUsdMonthly: 9000
+      compliance: [pci-like, audit-retention]
+      p95LatencyMs: 250
+      allowedRegions: [eastus2, centralus]
+    requiredDimensions: [architecture, operations, security, cost, troubleshooting]
+injects:
+  operations:
+    - Alert storm caused by malformed telemetry dimensions.
+    - Function cold-start spike during peak event hour.
+  security:
+    - Secret accidentally committed and rotation required.
+    - Overly broad managed identity permissions detected.
+  cost:
+    - Unexpected storage transaction growth.
+    - Application Insights ingestion bill spike.
+  troubleshooting:
+    - Intermittent 500s from downstream dependency timeout.
+    - Message processing delays due to poison queue buildup.

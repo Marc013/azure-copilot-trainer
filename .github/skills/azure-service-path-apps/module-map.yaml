@@ -1,0 +1,41 @@
+services:
+  app-service:
+    focus:
+      - web-app-deployment
+      - deployment-slots
+      - app-settings
+    dependencies: [key-vault, monitor]
+  functions:
+    focus:
+      - event-driven-design
+      - trigger-binding-patterns
+      - scaling-and-concurrency
+    dependencies: [storage, monitor]
+  storage:
+    focus:
+      - blob-and-queue-basics
+      - data-lifecycle
+      - access-tiers-and-cost
+    dependencies: []
+  key-vault:
+    focus:
+      - secret-management
+      - rotation-patterns
+      - managed-identity
+    dependencies: []
+  monitor:
+    focus:
+      - distributed-tracing
+      - alerts-and-action-groups
+      - incident-triage
+    dependencies: []
+modules:
+  - moduleId: M2
+    title: Host APIs and background jobs
+    services: [app-service, functions]
+  - moduleId: M3
+    title: Data and secret management
+    services: [storage, key-vault]
+  - moduleId: M4
+    title: Observability and operations
+    services: [monitor]

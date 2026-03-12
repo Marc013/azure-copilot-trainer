@@ -1,0 +1,68 @@
+{
+  "learnerId": "sample-001",
+  "courseId": "az-train-apps-001",
+  "version": "v1.0",
+  "lastUpdatedUtc": "2026-03-12T12:00:00Z",
+  "current": {
+    "moduleId": "M2",
+    "lessonId": "M2-L1",
+    "objectiveId": "M2.2",
+    "activityIndex": 3
+  },
+  "progress": {
+    "percentComplete": 34,
+    "moduleCompletion": {
+      "M1": 1,
+      "M2": 0.45,
+      "M3": 0,
+      "M4": 0,
+      "M5": 0,
+      "M6": 0
+    }
+  },
+  "scores": {
+    "quizzes": [
+      {
+        "assessmentId": "M1-QZ",
+        "score": 8,
+        "maxScore": 10,
+        "attempt": 1,
+        "timestampUtc": "2026-03-10T10:00:00Z"
+      }
+    ],
+    "practicals": [],
+    "finalAssessment": {
+      "assessmentId": "CAPSTONE",
+      "score": 0,
+      "maxScore": 100,
+      "attempt": 1,
+      "timestampUtc": "2026-03-12T12:00:00Z"
+    }
+  },
+  "weakAreas": [
+    {
+      "objectiveId": "M2.2",
+      "evidence": "Missed scaling strategy decision in quiz rationale",
+      "severity": "medium"
+    }
+  ],
+  "checkpoints": [
+    {
+      "checkpointId": "cp-20260312-120000",
+      "timestampUtc": "2026-03-12T12:00:00Z",
+      "moduleId": "M2",
+      "objectiveId": "M2.2"
+    }
+  ],
+  "resume": {
+    "token": "resume:sample-001:placeholder",
+    "issuedUtc": "2026-03-12T12:00:00Z",
+    "expiresUtc": "2026-03-19T12:00:00Z",
+    "hash": "replace-with-resume-token-script-output"
+  },
+  "privacy": {
+    "retentionDays": 90,
+    "containsPii": false,
+    "purgeAfterUtc": "2026-06-10T12:00:00Z"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "davidanson.vscode-markdownlint",
+    "github.copilot-chat",
+    "ms-azuretools.vscode-azure-github-copilot",
+    "yzhang.markdown-all-in-one"
+  ]
+}

@@ -1,0 +1,63 @@
+course:
+  courseId: az-train-apps-001
+  title: Azure Application Platform Professional Track
+  audience:
+    role: platform-engineer
+    level: intermediate
+    prerequisites:
+      - cloud-fundamentals
+      - basic-devops
+  duration:
+    weeks: 6
+    sessionsPerWeek: 2
+    minutesPerSession: 90
+  outcomes:
+    - id: O1
+      description: Design secure multi-service Azure application architecture
+      passEvidence: architecture-review
+    - id: O2
+      description: Implement operational excellence with observability and incident response
+      passEvidence: runbook-lab
+    - id: O3
+      description: Optimize cost and reliability trade-offs
+      passEvidence: optimization-report
+modules:
+  - moduleId: M1
+    title: Foundations and prerequisites
+    objectives: [M1.1, M1.2]
+    checks: [quiz]
+    recap: true
+  - moduleId: M2
+    title: Web and API hosting on App Service and Functions
+    objectives: [M2.1, M2.2, M2.3]
+    checks: [quiz, practical]
+    recap: true
+  - moduleId: M3
+    title: Data and secrets with Storage and Key Vault
+    objectives: [M3.1, M3.2]
+    checks: [quiz, practical]
+    recap: true
+  - moduleId: M4
+    title: Observability and operations with Monitor
+    objectives: [M4.1, M4.2, M4.3]
+    checks: [practical]
+    recap: true
+  - moduleId: M5
+    title: Security, governance, and cost
+    objectives: [M5.1, M5.2]
+    checks: [quiz]
+    recap: true
+  - moduleId: M6
+    title: Capstone implementation scenario
+    objectives: [M6.1, M6.2]
+    checks: [final-assessment]
+    recap: true
+adaptation:
+  remediationThresholds:
+    quiz: 0.75
+    practical: 0.80
+  weakAreaRules:
+    - ifObjectiveFailuresGte: 2
+      action: assign-remediation-module
+    - ifPracticalFailuresGte: 1
+      action: assign-guided-lab

@@ -1,0 +1,62 @@
+{
+  "bicep.decompileOnPaste": true,
+  "bicep.enableOutputTimestamps": true,
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "editor.renderFinalNewline": "on",
+  "editor.tabSize": 2,
+  "editor.trimAutoWhitespace": true,
+  "explorer.copyRelativePathSeparator": "/",
+  "files.associations": {
+    "**/pipelines/*.yaml": "azure-pipelines",
+    "**/pipelines/templates/*.yaml": "azure-pipelines"
+  },
+  "files.encoding": "utf8",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "git.autofetch": true,
+  "git.pruneOnFetch": true,
+  "markdown.extension.tableFormatter.enabled": true,
+  "markdownlint.config": {
+    "MD007": {
+      "indent": 2
+    },
+    "MD025": false,
+    "MD033": false,
+    "MD036": false
+  },
+  "powershell.pester.codeLens": true,
+  "powershell.pester.debugOutputVerbosity": "Detailed",
+  "powershell.pester.outputVerbosity": "Detailed",
+  "powershell.helpCompletion": "BlockComment",
+  "powershell.scriptAnalysis.enable": true,
+  "powershell.codeFormatting.addWhitespaceAroundPipe": true,
+  "powershell.codeFormatting.alignPropertyValuePairs": true,
+  "powershell.codeFormatting.autoCorrectAliases": true,
+  "powershell.codeFormatting.avoidSemicolonsAsLineTerminators": true,
+  "powershell.codeFormatting.ignoreOneLineBlock": false,
+  "powershell.codeFormatting.newLineAfterCloseBrace": true,
+  "powershell.codeFormatting.newLineAfterOpenBrace": false,
+  "powershell.codeFormatting.openBraceOnSameLine": true,
+  "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+  "powershell.codeFormatting.useConstantStrings": true,
+  "powershell.codeFormatting.useCorrectCasing": true,
+  "powershell.codeFormatting.whitespaceAfterSeparator": true,
+  "powershell.codeFormatting.whitespaceBeforeOpenBrace": true,
+  "powershell.codeFormatting.whitespaceBeforeOpenParen": true,
+  "powershell.codeFormatting.whitespaceAroundOperator": true,
+  "powershell.codeFormatting.whitespaceBetweenParameters": true,
+  "powershell.codeFormatting.whitespaceInsideBrace": true,
+  "powershell.powerShellDefaultVersion": "PowerShell",
+  "powershell.scriptAnalysis.settingsPath": "PSScriptAnalyzerSettings.psd1",
+  "terminal.integrated.cwd": "/",
+  "[markdown]": {
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one",
+    "files.trimTrailingWhitespace": false
+  },
+  "[yaml]": {
+    "editor.autoIndent": "advanced",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.defaultFormatter": "ms-azure-devops.azure-pipelines"
+  }
+}
