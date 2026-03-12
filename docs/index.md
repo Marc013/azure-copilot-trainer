@@ -113,23 +113,19 @@ permalink: /
 
 <section class="azure-grid">
   <article class="azure-card">
-    <div class="azure-chip">1</div>
-    <h3>Set up VS Code, extensions, and MCP servers</h3>
+    <h3><span class="azure-chip">1</span> Set up VS Code, extensions, and MCP servers</h3>
     <p>Install the required tooling and confirm Agent mode plus MCP services are active.</p>
   </article>
   <article class="azure-card">
-    <div class="azure-chip">2</div>
-    <h3>Generate a training track</h3>
+    <h3><span class="azure-chip">2</span> Generate a training track</h3>
     <p>Use the authoring prompt to create a role-based Azure program with scenarios, labs, and assessments.</p>
   </article>
   <article class="azure-card">
-    <div class="azure-chip">3</div>
-    <h3>Deliver sessions and checkpoint learners</h3>
+    <h3><span class="azure-chip">3</span> Deliver sessions and checkpoint learners</h3>
     <p>Run self-paced sessions, persist learner state, and recover seamlessly after interruptions.</p>
   </article>
   <article class="azure-card">
-    <div class="azure-chip">4</div>
-    <h3>Review progress and tighten weak areas</h3>
+    <h3><span class="azure-chip">4</span> Review progress and tighten weak areas</h3>
     <p>Use the weekly review prompt to adapt the path based on objective-level performance trends.</p>
   </article>
 </section>

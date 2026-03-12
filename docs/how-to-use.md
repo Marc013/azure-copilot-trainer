@@ -31,7 +31,7 @@ The MCP servers configured in `.vscode/mcp.json` are started via `npx`. Node.js 
 
 The Azure MCP server uses your active Azure CLI session.
 
-1. Install the Azure CLI from learn.microsoft.com/cli/azure/install-azure-cli.
+1. Install the Azure CLI from [learn.microsoft.com/cli/azure/install-azure-cli](https://learn.microsoft.com/cli/azure/install-azure-cli).
 2. Open a terminal and run:
 
    ```

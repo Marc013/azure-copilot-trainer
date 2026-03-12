@@ -11,7 +11,7 @@ plugins:
 
 # Theme settings
 color_scheme: azure
-search_enabled: true
+search_enabled: false
 heading_anchors: true
 permalink: pretty
 

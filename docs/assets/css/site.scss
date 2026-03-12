@@ -246,11 +246,15 @@ body {
 .azure-card h4 {
   margin-top: 0.2rem;
   margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
 .azure-chip {
   display: inline-flex;
-  margin-bottom: 0.6rem;
+  align-items: center;
+  margin: 0;
   padding: 0.3rem 0.65rem;
   border-radius: 999px;
   background: var(--chip-bg);
@@ -259,6 +263,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  flex-shrink: 0;
 }
 
 .azure-section {
@@ -274,6 +279,15 @@ body {
   border-spacing: 0;
   overflow: hidden;
   border-radius: 16px;
+  width: 100%;
+  table-layout: auto;
+}
+
+.azure-table table th,
+.azure-table table td {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  padding: 0.75rem;
 }
 
 .azure-table th {
@@ -376,6 +390,18 @@ html[data-theme="dark"] .main-content pre {
 .site-title:hover,
 .site-button:hover {
   background-image: linear-gradient(90deg, rgba(97, 184, 255, 0.18), transparent);
+}
+
+html[data-theme="dark"] .site-title,
+html[data-theme="dark"] .nav-list .nav-list-item>.nav-list-link,
+html[data-theme="dark"] .site-button {
+  color: #e9f7ff;
+}
+
+html[data-theme="dark"] .site-title:hover,
+html[data-theme="dark"] .nav-list .nav-list-item>.nav-list-link:hover,
+html[data-theme="dark"] .site-button:hover {
+  background-image: linear-gradient(90deg, rgba(97, 184, 255, 0.22), transparent);
 }
 
 .search-input {
