@@ -28,6 +28,14 @@ This guide explains how to operate the skill package in Visual Studio Code from 
 1. training-data/learners
 2. training-data/checkpoints
 
+## Scope and expectations
+
+This starter package includes a full training workflow, but only one service-path skill is domain-specialized today:
+
+1. azure-service-path-apps is optimized for App Service, Functions, Storage, Key Vault, and Monitor.
+2. You can still author tracks for other services (such as AKS) using the orchestration flow and prompts.
+3. For deep and highly deterministic AKS-only training output, add a dedicated AKS skill in .github/skills and include it in your prompt workflow.
+
 ## Prerequisites
 
 1. Visual Studio Code with GitHub Copilot access.
@@ -50,6 +58,13 @@ If these are present, VS Code can discover the skills and prompts.
 
 Open Settings and enable chat.useAgentSkills.
 
+For first-time setup in VS Code:
+
+1. Open Settings.
+2. Search for chat.useAgentSkills.
+3. Set it to true.
+4. Ensure Copilot Chat is in Agent mode.
+
 Recommended additional setting:
 
 1. Keep custom instructions concise and project-specific.
@@ -58,12 +73,13 @@ Recommended additional setting:
 ## Step 3: Confirm discovery in chat
 
 1. Open Copilot Chat.
-2. Type slash.
+2. Type /.
 3. Verify these entries appear:
-- azure-training-author
-- azure-self-paced-session
-- azure-learner-resume
-- azure-self-paced-review
+
+- /azure-training-author
+- /azure-self-paced-session
+- /azure-learner-resume
+- /azure-self-paced-review
 
 If they do not appear:
 
@@ -71,6 +87,30 @@ If they do not appear:
 2. Confirm SKILL names match their directory names exactly.
 3. Confirm prompt files end with .prompt.md.
 4. Reload window.
+
+## First 15-minute quick start
+
+If you are new to Agent Skills, use this exact sequence:
+
+- Open Copilot Chat and switch to Agent mode.
+- Run /azure-training-author and paste a short request:
+
+```text
+Create a 4-week Azure training plan for a beginner cloud engineer.
+Focus on Azure application platform fundamentals.
+Use 3 hours per week and include hands-on labs, checks, and a final assessment.
+```
+
+- Review output sections in this order:
+
+- Program overview and timeline.
+- Module objectives and IDs.
+- Trust report with learn.microsoft.com proof links.
+- Quality-gate pass/fail and remediation actions.
+
+- Run /azure-self-paced-session for learner sample-001, course az-train-apps-001, 60 minutes, objective M2.2.
+- Run /azure-learner-resume to validate continuity.
+- Run /azure-self-paced-review for last 7 days.
 
 ## Operating modes
 
@@ -102,6 +142,50 @@ Expected output:
 3. Scenario artifacts.
 4. Trust report with learn.microsoft.com proof links and confidence labels.
 5. Pass or fail quality decision with remediation steps.
+
+Example authoring request for AKS end-to-end implementation:
+
+1. Use prompt: /azure-training-author
+2. Paste this request:
+
+```text
+As an Azure engineer with limited knowledge of Azure Kubernetes Service (AKS), I need a step-by-step training program that teaches me to implement, operate, and maintain AKS in production.
+
+Training goals:
+- Cover all major AKS topics from fundamentals to operations.
+- Build a complete functional Azure solution by the end of the training.
+- Deploy one or more prebuilt containerized sample apps to AKS. Do not include container image authoring in scope.
+- Use Azure-Samples/aks-store-demo as the sample application source.
+- Use Azure Container Registry (ACR) as the image registry.
+- Use Azure DevOps pipeline for build and deployment automation to AKS.
+- Use Application Gateway Ingress Controller (AGIC) for ingress.
+- Ensure the AKS implementation is private, including private cluster and private networking patterns.
+
+Delivery requirements:
+- Teach in progressive hands-on labs with clear explanations at each step.
+- Include architecture, networking, security, identity, scaling, upgrades, observability, backup/DR, governance, and cost management.
+- Include checkpoints, practical validations, troubleshooting tasks, and final assessment.
+- Include learn.microsoft.com proof links and confidence labels for all key claims.
+
+Constraints:
+- Keep labs realistic for enterprise use.
+- Include recommended defaults, trade-off analysis, and common pitfalls.
+- Ensure final outcome is a fully working private AKS + AGIC + ACR + Azure DevOps deployment workflow.
+```
+
+Expected result pattern for this example:
+
+1. A multi-module learning path from AKS basics to enterprise operations.
+2. Hands-on labs that progressively build the private AKS platform and deploy the sample app.
+3. Pipeline-focused modules that implement CI and CD from Azure DevOps to AKS via ACR.
+4. Security and operations modules for day-2 management, monitoring, and incident response.
+5. Final capstone validation of a working end-to-end solution in Azure.
+
+Important note for this AKS example:
+
+1. This repository does not currently include a dedicated AKS skill under .github/skills.
+2. The request is valid and can still be generated through orchestration, scenario, assessment, grounding, and quality-gates.
+3. If you need stricter AKS coverage consistency across runs, add an AKS-focused skill and reference it in the prompt workflow.
 
 ### Mode B: Run a self-paced learning session
 
@@ -339,7 +423,7 @@ Recommended prompt additions:
 
 1. Run /azure-training-author with your real audience and constraints.
 2. Review artifacts and verify learn.microsoft.com proof links for all key claims.
-3. Run /azure-self-paced-session using learner sample-001.
+3. Run /azure-self-paced-session using learner ID sample-001 from training-data/learners/sample-learner.json.
 4. Interrupt and test /azure-learner-resume.
 
 ## References in this repository
