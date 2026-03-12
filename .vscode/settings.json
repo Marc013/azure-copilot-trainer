@@ -1,6 +1,7 @@
 {
   "bicep.decompileOnPaste": true,
   "bicep.enableOutputTimestamps": true,
+  "chat.useAgentSkills": true,
   "editor.formatOnSave": true,
   "editor.insertSpaces": true,
   "editor.renderFinalNewline": "on",
