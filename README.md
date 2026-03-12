@@ -1,5 +1,8 @@
 # Azure Training Agent Skills Starter Package
 
+<!-- ![azure-copilot-trainer][1] -->
+<center><img src="./docs/media/azure_copilot_trainer.png" alt="azure-copilot-trainer" width="75%"/></center>
+
 This package provides a production-ready blueprint and starter implementation for GitHub Copilot Agent Skills in VS Code focused on Azure training delivery.
 
 ## What you get
@@ -67,3 +70,5 @@ Use from chat by typing `/` and selecting:
 - Claims without learn.microsoft.com proof links must be treated as unverified and excluded from release output.
 
 For a full operational guide, see [docs/how-to-use.md](docs/how-to-use.md).
+
+[1]: /docs/media/azure_copilot_trainer.png
