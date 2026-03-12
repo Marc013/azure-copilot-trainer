@@ -1,48 +1,74 @@
 (function () {
-  const storageKey = "azure-training-site-theme";
+  const modeValues = ["light", "dark"];
 
-  function safeGetStoredTheme() {
+  function getStorageKey() {
+    const explicitBase = document.documentElement.getAttribute("data-site-baseurl");
+    const pathParts = window.location.pathname.split("/").filter(Boolean);
+    const inferredBase = pathParts.length > 0 ? "/" + pathParts[0] : "";
+    const base = explicitBase || inferredBase;
+    return "azure-training-site-theme:" + base;
+  }
+
+  function safeGetStoredMode() {
     try {
-      return window.localStorage.getItem(storageKey);
+      return window.localStorage.getItem(getStorageKey());
     } catch (error) {
       return null;
     }
   }
 
-  function safeSetStoredTheme(theme) {
+  function safeSetStoredMode(mode) {
     try {
-      window.localStorage.setItem(storageKey, theme);
+      window.localStorage.setItem(getStorageKey(), mode);
     } catch (error) {
-      // Ignore storage failures and keep theme for current page session.
+      // Ignore storage failures and keep mode for current page session.
     }
   }
 
-  function getPreferredTheme() {
-    const stored = safeGetStoredTheme();
-    if (stored === "dark" || stored === "light") {
+  function getSystemTheme() {
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  }
+
+  function getInitialMode() {
+    const stored = safeGetStoredMode();
+    if (modeValues.includes(stored)) {
       return stored;
     }
-
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    return getSystemTheme();
   }
 
-  function applyTheme(theme) {
+  function applyMode(mode) {
+    const theme = mode;
     document.documentElement.setAttribute("data-theme", theme);
-    safeSetStoredTheme(theme);
+    document.documentElement.setAttribute("data-theme-mode", mode);
+    safeSetStoredMode(mode);
 
     const button = document.querySelector(".theme-toggle");
     if (!button) {
       return;
     }
 
-    const label = theme === "dark" ? "Dark mode" : "Light mode";
-    const nextLabel = theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
-    const icon = theme === "dark" ? "Moon" : "Sun";
+    const isDark = theme === "dark";
+    const label = isDark ? "Dark mode" : "Light mode";
+    const nextLabel = isDark ? "Switch to light mode" : "Switch to dark mode";
 
     button.setAttribute("aria-label", nextLabel);
     button.setAttribute("title", nextLabel);
-    button.querySelector(".theme-toggle-text").textContent = label;
-    button.querySelector(".theme-toggle-icon").textContent = icon === "Moon" ? "◐" : "☀";
+    button.setAttribute("aria-pressed", String(isDark));
+
+    const textNode = button.querySelector(".theme-toggle-text");
+    const iconNode = button.querySelector(".theme-toggle-icon");
+
+    if (textNode) {
+      textNode.textContent = label;
+    }
+
+    if (iconNode) {
+      iconNode.textContent = isDark ? "◐" : "☀";
+    }
   }
 
   function mountToggle() {
@@ -58,17 +84,40 @@
     const button = document.createElement("button");
     button.type = "button";
     button.className = "theme-toggle";
+    button.setAttribute("aria-pressed", "false");
     button.innerHTML = '<span class="theme-toggle-icon" aria-hidden="true">☀</span><span class="theme-toggle-text">Light mode</span>';
     button.addEventListener("click", function () {
-      const current = document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
-      applyTheme(current === "dark" ? "light" : "dark");
+      const currentMode = document.documentElement.getAttribute("data-theme-mode") === "dark" ? "dark" : "light";
+      applyMode(currentMode === "dark" ? "light" : "dark");
     });
     document.body.appendChild(button);
   }
 
+  function listenToSystemThemeChanges() {
+    if (!window.matchMedia) {
+      return;
+    }
+
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = function () {
+      const storedMode = safeGetStoredMode();
+      if (storedMode !== "dark" && storedMode !== "light") {
+        applyMode(getSystemTheme());
+      }
+    };
+
+    if (typeof media.addEventListener === "function") {
+      media.addEventListener("change", onChange);
+    } else if (typeof media.addListener === "function") {
+      media.addListener(onChange);
+    }
+  }
+
   function initThemeToggle() {
+    applyMode(getInitialMode());
     mountToggle();
-    applyTheme(getPreferredTheme());
+    applyMode(getInitialMode());
+    listenToSystemThemeChanges();
   }
 
   if (document.readyState === "loading") {
