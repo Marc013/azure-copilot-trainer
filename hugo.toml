@@ -1,0 +1,27 @@
+baseURL = "/"
+languageCode = "en-us"
+title = "Azure Copilot Trainer"
+contentDir = "docs"
+enableRobotsTXT = true
+disableKinds = ["taxonomy", "term"]
+
+[module]
+  [[module.imports]]
+    path = "github.com/google/docsy"
+
+[params]
+  description = "Simple documentation site for the Azure Copilot Trainer project."
+
+[params.ui]
+  breadcrumb_disable = true
+  sidebar_menu_compact = true
+  sidebar_search_disable = true
+  footer_about_disable = true
+
+[params.ui.feedback]
+  enable = false
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

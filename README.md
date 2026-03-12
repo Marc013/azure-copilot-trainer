@@ -91,14 +91,14 @@ For a full operational guide, see [docs/how-to-use.md](docs/how-to-use.md).
 
 ## GitHub Pages
 
-This repo includes a Jekyll-based documentation site in the `docs/` folder, built with the [just-the-docs](https://just-the-docs.com) theme.
+This repo includes a Hugo-based documentation site that uses the [Docsy](https://github.com/google/docsy) theme.
 
 To enable GitHub Pages:
 
 1. Go to **Settings › Pages** in your GitHub repository.
-2. Under **Source**, select **Deploy from a branch**.
-3. Set **Branch** to `main` (or your default branch) and **Folder** to `/docs`.
-4. Click **Save**. GitHub will build and publish the site automatically on every push to that branch.
+2. Under **Source**, select **GitHub Actions**.
+3. Ensure the workflow file `.github/workflows/github-pages-hugo.yml` is present on your default branch.
+4. Push to `main` (or trigger the workflow manually). GitHub will build and publish the site.
 
 The published site will have two pages:
 
@@ -110,11 +110,10 @@ The published site will have two pages:
 To preview the site locally before pushing:
 
 ```
-cd docs
-bundle install
-bundle exec jekyll serve
+npm install
+hugo server
 ```
 
-Then open `http://localhost:4000` in your browser. Ruby and Bundler are required for local preview.
+Then open `http://localhost:1313` in your browser.
 
 [1]: /docs/media/azure_copilot_trainer.png
