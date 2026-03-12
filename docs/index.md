@@ -98,7 +98,7 @@ permalink: /
 
 ## MCP Server Integration
 
-<div class="azure-table">
+<div class="azure-table" markdown="1">
 
 | Server              | Purpose                                                                | Why It Matters                                                                          |
 | ------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
