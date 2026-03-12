@@ -7,7 +7,7 @@ nav_order: 1
 # Azure Copilot Trainer
 
 <center>
-  <img src="./media/azure_copilot_trainer.png" alt="Azure Copilot Trainer" width="60%" style="max-width: 400px; margin: 2rem 0;">
+  <img src="{{ '/media/azure_copilot_trainer.png' | relative_url }}" alt="Azure Copilot Trainer" width="60%" style="max-width: 400px; margin: 2rem 0;">
 </center>
 
 A production-ready blueprint and starter implementation for GitHub Copilot Agent Skills in VS Code focused on Azure training delivery.
@@ -31,7 +31,7 @@ A production-ready blueprint and starter implementation for GitHub Copilot Agent
 
 ## Get Started
 
-To set up and use this package, see the [How To Use](./how-to-use.md) guide for step-by-step instructions.
+To set up and use this package, see the [How To Use](./how-to-use.html) guide for step-by-step instructions.
 
 ## Prerequisites
 
@@ -54,4 +54,4 @@ This solution uses four powerful MCP servers:
 
 ---
 
-**Ready to begin?** → [View Setup Instructions](./how-to-use.md)
+**Ready to begin?** → [View Setup Instructions](./how-to-use.html)

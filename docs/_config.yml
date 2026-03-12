@@ -5,7 +5,6 @@ baseurl: "/azure-copilot-trainer"
 
 # Jekyll settings
 markdown: kramdown
-theme: null
 plugins:
   - jekyll-sitemap
 

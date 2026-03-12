@@ -22,7 +22,7 @@ The MCP servers configured in `.vscode/mcp.json` are started via `npx`. Node.js 
 1. Download Node.js from nodejs.org and run the installer.
 2. Open a terminal and run the following to confirm the version:
 
-   ```
+   ```bash
    node --version
    ```
 
@@ -35,13 +35,13 @@ The Azure MCP server uses your active Azure CLI session.
 1. Install the Azure CLI from [learn.microsoft.com/cli/azure/install-azure-cli](https://learn.microsoft.com/cli/azure/install-azure-cli).
 2. Open a terminal and run:
 
-   ```
+   ```bash
    az login
    ```
 
 3. Complete the browser sign-in. Confirm you are signed in to the correct tenant and subscription:
 
-   ```
+   ```bash
    az account show
    ```
 
@@ -177,7 +177,7 @@ Use this to generate a complete Azure training program from scratch.
 2. Type `/` and select `/azure-training-author` from the list, or type it in full and press Enter.
 3. In your message, describe the training program you want. Be specific about the audience, duration, services, and any constraints. Example:
 
-   ```
+   ```text
    Create a 4-week Azure training program for an intermediate platform engineer.
    Focus on Azure App Service, Azure Functions, Azure Storage, and Azure Key Vault.
    Use 4 hours per week. Include hands-on Bicep deployment labs, PowerShell automation
@@ -198,7 +198,7 @@ Use this to generate a complete Azure training program from scratch.
 
 **Example for an advanced AKS end-to-end request:**
 
-```
+```text
 As an Azure engineer with limited knowledge of AKS, create a step-by-step training program
 to implement, operate, and maintain AKS in production.
 
@@ -230,7 +230,7 @@ Use this to run one timed learning session for a specific learner on a specific 
 2. Type `/` and select `/azure-self-paced-session`, or type it in full and press Enter.
 3. Provide the following details in your message:
 
-   ```
+   ```text
    Learner ID: sample-001
    Course ID: az-train-apps-001
    Session length: 60 minutes
@@ -259,7 +259,7 @@ Use this when a learner needs to continue exactly where they left off.
 2. Type `/` and select `/azure-learner-resume`, or type it in full and press Enter.
 3. Provide the learner ID in your message:
 
-   ```
+   ```text
    Learner ID: sample-001
    ```
 
@@ -291,7 +291,7 @@ Use this at the end of each week to review progress, find weak areas, and plan t
 2. Type `/` and select `/azure-self-paced-review`, or type it in full and press Enter.
 3. Provide the following details in your message:
 
-   ```
+   ```text
    Learner ID: sample-001
    Course ID: az-train-apps-001
    Review window: last 7 days

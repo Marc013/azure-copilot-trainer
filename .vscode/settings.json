@@ -51,6 +51,9 @@
   "powershell.powerShellDefaultVersion": "PowerShell",
   "powershell.scriptAnalysis.settingsPath": "PSScriptAnalyzerSettings.psd1",
   "terminal.integrated.cwd": "/",
+  "[html]": {
+    "editor.formatOnSave": false
+  },
   "[markdown]": {
     "editor.defaultFormatter": "yzhang.markdown-all-in-one",
     "files.trimTrailingWhitespace": false

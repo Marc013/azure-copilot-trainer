@@ -7,7 +7,6 @@
   <meta name="description" content="{{ page.description | default: site.description }}">
   <title>{{ page.title }} - {{ site.title }}</title>
   <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
-  {% feed_meta %}
 </head>
 
 <body>
@@ -17,9 +16,8 @@
         <a href="{{ '/' | relative_url }}" class="site-title">{{ site.title }}</a>
         <nav>
           <ul>
-            <li><a href="{{ '/' | relative_url }}" {% if page.url=='/' %}class="active" {% endif %}>Home</a></li>
-            <li><a href="{{ '/how-to-use.html' | relative_url }}" {% if page.url=='/how-to-use.html' %}class="active" {%
-                endif %}>Setup</a></li>
+            <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Home</a></li>
+            <li><a href="{{ '/how-to-use.html' | relative_url }}" {% if page.url == '/how-to-use.html' %}class="active"{% endif %}>Setup</a></li>
           </ul>
         </nav>
       </div>

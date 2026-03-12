@@ -159,7 +159,7 @@ h1 {
   margin-top: 0;
   padding-bottom: var(--spacing-md);
   border-bottom: 2px solid var(--color-accent);
-  display: inline-block;
+  display: block;
 }
 
 h2 {
@@ -455,6 +455,9 @@ footer {
   }
 
   table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     font-size: 0.85rem;
   }
 
