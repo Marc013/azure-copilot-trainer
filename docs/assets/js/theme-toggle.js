@@ -1,8 +1,24 @@
 (function () {
   const storageKey = "azure-training-site-theme";
 
+  function safeGetStoredTheme() {
+    try {
+      return window.localStorage.getItem(storageKey);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function safeSetStoredTheme(theme) {
+    try {
+      window.localStorage.setItem(storageKey, theme);
+    } catch (error) {
+      // Ignore storage failures and keep theme for current page session.
+    }
+  }
+
   function getPreferredTheme() {
-    const stored = window.localStorage.getItem(storageKey);
+    const stored = safeGetStoredTheme();
     if (stored === "dark" || stored === "light") {
       return stored;
     }
@@ -12,7 +28,7 @@
 
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
-    window.localStorage.setItem(storageKey, theme);
+    safeSetStoredTheme(theme);
 
     const button = document.querySelector(".theme-toggle");
     if (!button) {
@@ -34,6 +50,11 @@
       return;
     }
 
+    if (!document.body) {
+      window.requestAnimationFrame(mountToggle);
+      return;
+    }
+
     const button = document.createElement("button");
     button.type = "button";
     button.className = "theme-toggle";
@@ -45,8 +66,14 @@
     document.body.appendChild(button);
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
+  function initThemeToggle() {
     mountToggle();
     applyTheme(getPreferredTheme());
-  });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initThemeToggle, { once: true });
+  } else {
+    initThemeToggle();
+  }
 })();
